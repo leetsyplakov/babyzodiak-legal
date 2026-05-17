@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BabyZodiak — Cosmic Baby Sign Finder</title>
+<style>
+  :root {
+    --bg-start: #0a0521;
+    --bg-mid: #221054;
+    --bg-end: #050210;
+    --gold: #f1d98f;
+    --lavender: #d9aeff;
+    --text: #f3f3f8;
+    --muted: rgba(243, 243, 248, 0.65);
+    --card: rgba(255, 255, 255, 0.06);
+    --border: rgba(180, 140, 240, 0.4);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(circle at 70% 30%, var(--bg-mid), var(--bg-start) 50%, var(--bg-end) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 60px 24px 80px; }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 56px;
+    margin: 0 0 8px;
+    background: linear-gradient(90deg, var(--gold), var(--lavender));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(180, 140, 240, 0.3);
+  }
+  .tag { color: var(--muted); font-style: italic; margin-bottom: 40px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    margin-bottom: 20px;
+    box-shadow: 0 10px 40px rgba(120, 60, 220, 0.2);
+  }
+  h2 { font-size: 22px; margin-top: 0; color: var(--lavender); }
+  a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(241, 217, 143, 0.4); }
+  a:hover { border-bottom-color: var(--gold); }
+  ul { padding-left: 20px; }
+  li { margin: 6px 0; }
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+  .btn {
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(180, 140, 240, 0.25), rgba(241, 217, 143, 0.18));
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(180, 140, 240, 0.4); }
+  footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 40px; }
+  .stars { position: fixed; inset: 0; pointer-events: none; opacity: 0.6; }
+</style>
+</head>
+<body>
+<canvas class="stars" id="starfield"></canvas>
+<div class="wrap">
+  <h1>BabyZodiak</h1>
+  <p class="tag">Cosmic baby sign finder for iPhone ✦</p>
+
+  <div class="card">
+    <h2>About</h2>
+    <p>BabyZodiak predicts your future baby's zodiac sign from the start date of your last menstrual period, using the standard 40-week pregnancy window. Tap any sign to learn about its personality, compatibility, and famous people in history who share it. You can also pick a sign first and discover the cycle dates that would lead to that sign.</p>
+    <p>This app is for entertainment purposes only and is not medical advice.</p>
+  </div>
+
+  <div class="card">
+    <h2>Support &amp; Contact</h2>
+    <p>For questions, feedback, or bug reports, email <a href="mailto:leetsyplakov@gmail.com">leetsyplakov@gmail.com</a>.</p>
+  </div>
+
+  <div class="card">
+    <h2>Legal</h2>
+    <div class="actions">
+      <a class="btn" href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+
+  <footer>© 2026 BabyZodiak</footer>
+</div>
+
+<script>
+  // Subtle twinkling starfield
+  const c = document.getElementById('starfield');
+  const ctx = c.getContext('2d');
+  let stars = [];
+  function resize() {
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+    stars = Array.from({length: 140}, () => ({
+      x: Math.random() * c.width,
+      y: Math.random() * c.height,
+      r: Math.random() * 1.4 + 0.3,
+      o: Math.random() * 0.7 + 0.2,
+      p: Math.random() * Math.PI * 2
+    }));
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  function draw(t) {
+    ctx.clearRect(0, 0, c.width, c.height);
+    for (const s of stars) {
+      const alpha = s.o * (0.6 + 0.4 * Math.sin(t / 700 + s.p));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+</script>
+</body>
+</html>
